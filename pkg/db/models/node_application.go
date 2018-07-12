@@ -7,14 +7,14 @@ import (
 type NodeApplication struct {
 	gorm.Model
 
-	IPAddress      string      `json:"-" gorm:"not null"`
-	EstimatedSpeed int         `json:"estimatedSpeed" gorm:"not null"`
-	PoolAccepted   bool        `json:"-" gorm:"not null;default:false"`
-	NodeAccepted   bool        `json:"-" gorm:"not null;default:false"`
-	Accepted       bool        `json:"-" gorm:"not null;default:false"`
-	Profile        NodeProfile `gorm:"FOREIGNKEY:ProfileID;"`
-	ProfileID      int
-
+	IPAddress      string `json:"-" gorm:"not null"`
+	EstimatedSpeed int    `json:"estimatedSpeed" gorm:"not null"`
+	PoolAccepted   bool   `json:"-" gorm:"not null;default:false"`
+	NodeAccepted   bool   `json:"-" gorm:"not null;default:false"`
+	Accepted       bool   `json:"-" gorm:"not null;default:false"`
+	Wallet         string `json:"wallet" gorm:"not null; unique"`
+	Profile        NodeProfile
+	ProfileID      uint `json:"-"`
 	// Schedule
 }
 
@@ -34,9 +34,9 @@ func CreateApplication(payload *NodeRequestPayload) NodeApplication {
 	application := NodeApplication{
 		IPAddress:      ipAddress,
 		EstimatedSpeed: payload.EstimatedSpeed,
+		Wallet:         payload.Wallet,
 		Profile: NodeProfile{
 			Name:     payload.Name,
-			Wallet:   payload.Wallet,
 			Email:    payload.Email,
 			Bio:      payload.Bio,
 			Location: payload.Location,
