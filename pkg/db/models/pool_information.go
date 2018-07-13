@@ -16,3 +16,7 @@ type PoolInformation struct {
 	Wallet    string `json:"wallet" gorm:"not null"`
 	Public    bool   `json:"public" grom:"not null;default:false"`
 }
+
+func (PoolInformation) TableName() string {
+	return "pool_information"
+}

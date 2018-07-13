@@ -13,8 +13,7 @@ func Initialize() {
 	}
 	defer db.Close()
 
-	// Migrate the schema
+	// Migrate the schemas
 	db.AutoMigrate(&models.PoolInformation{})
-	db.AutoMigrate(&models.NodeApplication{})
 	db.AutoMigrate(&models.NodeProfile{})
 }
