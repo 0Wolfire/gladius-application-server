@@ -5,6 +5,7 @@ import (
 	"github.com/gladiusio/gladius-application-server/pkg/db/models"
 	"github.com/jinzhu/gorm"
 	"log"
+	"database/sql"
 )
 
 func db() *gorm.DB {
@@ -44,9 +45,14 @@ func TempDBCalls() {
 	}
 
 	// Pool Accepts Application
-	PoolApplicationStatus("0x975432957943875235", true)
+	PoolApplicationStatus("0x975432957943875235", false)
 	// Node Denies Application
 	NodeApplicationStatus("0x975432957943875235", false)
+
+	// Pool Accepts Application
+	PoolApplicationStatus("0x97543293753875235", true)
+	// Node Denies Application
+	NodeApplicationStatus("0x97543293753875235", true)
 
 	poolInfo := models.PoolInformation{
 		Name:     "Gladius Pool",
@@ -103,12 +109,12 @@ func NodeProfile(wallet string) (models.NodeProfile, error) {
 
 func PoolApplicationStatus(wallet string, accepted bool) {
 	profile, _ := NodeProfile(wallet)
-	profile.PoolAccepted = accepted
+	profile.PoolAccepted = sql.NullBool{Valid:true, Bool:accepted}
 	db().Save(&profile)
 }
 
 func NodeApplicationStatus(wallet string, accepted bool) {
 	profile, _ := NodeProfile(wallet)
-	profile.NodeAccepted = accepted
+	profile.NodeAccepted = sql.NullBool{Valid:true, Bool:accepted}
 	db().Save(&profile)
 }

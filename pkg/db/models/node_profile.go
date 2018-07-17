@@ -2,21 +2,22 @@ package models
 
 import (
 	"github.com/jinzhu/gorm"
+	"database/sql"
 )
 
 type NodeProfile struct {
 	gorm.Model
 
-	Name           string `json:"name" gorm:"not null"`
-	Email          string `json:"email" gorm:"not null"`
-	Bio            string `json:"bio" gorm:"not null"`
-	Location       string `json:"location" gorm:"not null"`
-	IPAddress      string `json:"-" gorm:"not null"`
-	EstimatedSpeed int    `json:"estimatedSpeed" gorm:"not null"`
-	PoolAccepted   bool   `json:"-" gorm:"not null;default:false"`
-	NodeAccepted   bool   `json:"-" gorm:"not null;default:false"`
-	Accepted       bool   `json:"-" gorm:"not null;default:false"`
-	Wallet         string `json:"wallet" gorm:"not null; unique"`
+	Name           string       `json:"name" gorm:"not null"`
+	Email          string       `json:"email" gorm:"not null"`
+	Bio            string       `json:"bio" gorm:"not null"`
+	Location       string       `json:"location" gorm:"not null"`
+	IPAddress      string       `json:"-" gorm:"not null"`
+	EstimatedSpeed int          `json:"estimatedSpeed" gorm:"not null"`
+	PoolAccepted   sql.NullBool `json:"-" gorm:"default:null"`
+	NodeAccepted   sql.NullBool `json:"-" gorm:"default:null"`
+	Accepted       sql.NullBool `json:"-" gorm:"default:null"`
+	Wallet         string       `json:"wallet" gorm:"not null; unique"`
 }
 
 type NodeRequestPayload struct {
@@ -46,8 +47,9 @@ func CreateApplication(payload *NodeRequestPayload) NodeProfile {
 }
 
 func (profile *NodeProfile) AfterUpdate(tx *gorm.DB) (err error) {
-	if profile.Accepted != (profile.PoolAccepted && profile.NodeAccepted) {
-		tx.Model(&NodeProfile{}).Where("id = ?", profile.ID).Update("accepted", profile.PoolAccepted && profile.NodeAccepted)
+	if profile.Accepted.Bool != (profile.PoolAccepted.Bool && profile.NodeAccepted.Bool) {
+		tx.Model(&NodeProfile{}).Where("id = ?", profile.ID).Update("accepted", profile.PoolAccepted.Bool && profile.NodeAccepted.Bool)
 	}
+
 	return
 }
