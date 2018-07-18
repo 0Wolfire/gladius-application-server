@@ -8,19 +8,31 @@ import (
 	"database/sql"
 )
 
+var Database *gorm.DB
+
 func db() *gorm.DB {
-	db, err := gorm.Open("sqlite3", "test.db")
-	if err != nil {
-		println(err)
-		panic("failed to connect database")
+	if Database != nil {
+		defer Database.Close()
+
+		// Migrate the schemas
+		Database.AutoMigrate(&models.PoolInformation{})
+		Database.AutoMigrate(&models.NodeProfile{})
+
+		return Database
+	} else {
+		db, err := gorm.Open("sqlite3", "test.db")
+		if err != nil {
+			println(err)
+			panic("failed to connect database")
+		}
+		defer db.Close()
+
+		// Migrate the schemas
+		db.AutoMigrate(&models.PoolInformation{})
+		db.AutoMigrate(&models.NodeProfile{})
+
+		return db
 	}
-	defer db.Close()
-
-	// Migrate the schemas
-	db.AutoMigrate(&models.PoolInformation{})
-	db.AutoMigrate(&models.NodeProfile{})
-
-	return db
 }
 
 // temp
