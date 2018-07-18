@@ -14,6 +14,11 @@ func db() *gorm.DB {
 		println(err)
 		panic("failed to connect database")
 	}
+	defer db.Close()
+
+	// Migrate the schemas
+	db.AutoMigrate(&models.PoolInformation{})
+	db.AutoMigrate(&models.NodeProfile{})
 
 	return db
 }
