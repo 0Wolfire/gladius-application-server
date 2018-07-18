@@ -27,14 +27,12 @@ type NodeRequestPayload struct {
 	Email          string `json:"email"`
 	Bio            string `json:"bio"`
 	Location       string `json:"location"`
+	IPAddress      string `json:"ipAddress"`
 }
 
 func CreateApplication(payload *NodeRequestPayload) NodeProfile {
-	// placeholder until REST request can pull ip in
-	ipAddress := "0.0.0.0"
-
 	profile := NodeProfile{
-		IPAddress:      ipAddress,
+		IPAddress:      payload.IPAddress,
 		EstimatedSpeed: payload.EstimatedSpeed,
 		Wallet:         payload.Wallet,
 		Name:           payload.Name,

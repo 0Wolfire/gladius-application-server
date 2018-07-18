@@ -11,6 +11,7 @@ import (
 func db() *gorm.DB {
 	db, err := gorm.Open("sqlite3", "test.db")
 	if err != nil {
+		println(err)
 		panic("failed to connect database")
 	}
 
