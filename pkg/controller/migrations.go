@@ -7,6 +7,7 @@ import (
 
 func Initialize(db *gorm.DB) (*gorm.DB, error) {
 	var err error
+
 	if db == nil {
 		db, err = gorm.Open("sqlite3", "test.db")
 	}
@@ -14,8 +15,6 @@ func Initialize(db *gorm.DB) (*gorm.DB, error) {
 	if err != nil {
 		return db, err
 	}
-
-	defer db.Close()
 
 	// Migrate the schemas
 	db.AutoMigrate(&models.PoolInformation{})
