@@ -4,106 +4,78 @@ import (
 	"errors"
 	"github.com/gladiusio/gladius-application-server/pkg/db/models"
 	"github.com/jinzhu/gorm"
-	"log"
-	"database/sql"
+		"database/sql"
 )
-
-var Database *gorm.DB
-
-func db() *gorm.DB {
-	if Database != nil {
-		defer Database.Close()
-
-		// Migrate the schemas
-		Database.AutoMigrate(&models.PoolInformation{})
-		Database.AutoMigrate(&models.NodeProfile{})
-
-		return Database
-	} else {
-		db, err := gorm.Open("sqlite3", "test.db")
-		if err != nil {
-			println(err)
-			panic("failed to connect database")
-		}
-		defer db.Close()
-
-		// Migrate the schemas
-		db.AutoMigrate(&models.PoolInformation{})
-		db.AutoMigrate(&models.NodeProfile{})
-
-		return db
-	}
-}
 
 // temp
 func TempDBCalls() {
 	//Temp for testing
-	request := models.NodeRequestPayload{
-		EstimatedSpeed: 100,
-		Wallet:         "0x975432957943875235",
-		Name:           "Name",
-		Email:          "email@fds.com",
-		Bio:            "bio",
-		Location:       "location",
-	}
-
-	NodeApplyToPool(request)
-
-	requestUpdate := models.NodeRequestPayload{
-		Wallet:   "0x975432957943875235",
-		Name:     "Name Updated",
-		Email:    "email@fds.com Updated",
-		Bio:      "bio Updated",
-		Location: "location Updated",
-	}
-
-	_, err := NodeUpdateProfile(requestUpdate)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// Pool Accepts Application
-	PoolApplicationStatus("0x975432957943875235", false)
-	// Node Denies Application
-	NodeApplicationStatus("0x975432957943875235", false)
-
-	// Pool Accepts Application
-	PoolApplicationStatus("0x97543293753875235", true)
-	// Node Denies Application
-	NodeApplicationStatus("0x97543293753875235", true)
-
-	poolInfo := models.PoolInformation{
-		Name:     "Gladius Pool",
-		Address:  "124.232.83.8",
-		Bio:      "Gladius Testing Pool",
-		Location: "Washington D.C.",
-		Rating:   5,
-		Wallet:   "0x96585865865",
-		Public:   true,
-	}
-
-	PoolCreateUpdateData(poolInfo)
+	//request := models.NodeRequestPayload{
+	//	EstimatedSpeed: 100,
+	//	Wallet:         "0x975432957943875235",
+	//	Name:           "Name",
+	//	Email:          "email@fds.com",
+	//	Bio:            "bio",
+	//	Location:       "location",
+	//}
+	//
+	//NodeApplyToPool(request)
+	//
+	//requestUpdate := models.NodeRequestPayload{
+	//	Wallet:   "0x975432957943875235",
+	//	Name:     "Name Updated",
+	//	Email:    "email@fds.com Updated",
+	//	Bio:      "bio Updated",
+	//	Location: "location Updated",
+	//}
+	//
+	//_, err := NodeUpdateProfile(requestUpdate)
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
+	//
+	//// Pool Accepts Application
+	//PoolApplicationStatus("0x975432957943875235", false)
+	//// Node Denies Application
+	//NodeApplicationStatus("0x975432957943875235", false)
+	//
+	//// Pool Accepts Application
+	//PoolApplicationStatus("0x97543293753875235", true)
+	//// Node Denies Application
+	//NodeApplicationStatus("0x97543293753875235", true)
+	//
+	//poolInfo := models.PoolInformation{
+	//	Name:     "Gladius Pool",
+	//	Address:  "124.232.83.8",
+	//	Bio:      "Gladius Testing Pool",
+	//	Location: "Washington D.C.",
+	//	Rating:   5,
+	//	Wallet:   "0x96585865865",
+	//	Public:   true,
+	//}
+	//
+	//PoolCreateUpdateData(poolInfo)
 }
 
-func PoolCreateUpdateData(poolInfo models.PoolInformation) {
+func PoolCreateUpdateData(db *gorm.DB, poolInfo models.PoolInformation) {
 	var pool models.PoolInformation
 
-	db().Model(&pool).FirstOrCreate(&pool)
-	db().Model(&pool).Updates(&poolInfo)
+	db.Model(&pool).FirstOrCreate(&pool)
+	db.Model(&pool).Updates(&poolInfo)
 }
 
-func NodeApplyToPool(payload models.NodeRequestPayload) {
+func NodeApplyToPool(db *gorm.DB, payload models.NodeRequestPayload) {
 	profile := models.CreateApplication(&payload)
-	db().Model(&profile).Where("wallet = ?", payload.Wallet).FirstOrCreate(&profile)
+	db.Model(&profile).Where("wallet = ?", payload.Wallet).FirstOrCreate(&profile)
 }
 
-func NodeUpdateProfile(payload models.NodeRequestPayload) (models.NodeProfile, error) {
-	profile, err := NodeProfile(payload.Wallet)
+func NodeUpdateProfile(db *gorm.DB, payload models.NodeRequestPayload) (models.NodeProfile, error) {
+	profile, err := NodeProfile(db, payload.Wallet)
 	if err != nil {
 		return profile, err
 	}
 
-	db().Model(&profile).Updates(
+	db.Model(&profile).Updates(
 		models.NodeProfile{
 			Name:     payload.Name,
 			Bio:      payload.Bio,
@@ -115,24 +87,24 @@ func NodeUpdateProfile(payload models.NodeRequestPayload) (models.NodeProfile, e
 	return profile, nil
 }
 
-func NodeProfile(wallet string) (models.NodeProfile, error) {
+func NodeProfile(db *gorm.DB, wallet string) (models.NodeProfile, error) {
 	var profile models.NodeProfile
 
-	if err := db().Model(&profile).Where("wallet = ?", wallet).First(&profile).Error; err != nil {
+	if err := db.Model(&profile).Where("wallet = ?", wallet).First(&profile).Error; err != nil {
 		return models.NodeProfile{}, errors.New("NodeProfile() profile not found for given wallet address")
 	}
 
 	return profile, nil
 }
 
-func PoolApplicationStatus(wallet string, accepted bool) {
-	profile, _ := NodeProfile(wallet)
+func PoolApplicationStatus(db *gorm.DB, wallet string, accepted bool) {
+	profile, _ := NodeProfile(db, wallet)
 	profile.PoolAccepted = sql.NullBool{Valid:true, Bool:accepted}
-	db().Save(&profile)
+	db.Save(&profile)
 }
 
-func NodeApplicationStatus(wallet string, accepted bool) {
-	profile, _ := NodeProfile(wallet)
+func NodeApplicationStatus(db *gorm.DB, wallet string, accepted bool) {
+	profile, _ := NodeProfile(db, wallet)
 	profile.NodeAccepted = sql.NullBool{Valid:true, Bool:accepted}
-	db().Save(&profile)
+	db.Save(&profile)
 }
