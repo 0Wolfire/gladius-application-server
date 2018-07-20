@@ -4,45 +4,48 @@ import (
 	"errors"
 	"github.com/gladiusio/gladius-application-server/pkg/db/models"
 	"github.com/jinzhu/gorm"
-		"database/sql"
-)
+	"database/sql"
+	)
 
 // temp
 func TempDBCalls() {
-	//Temp for testing
+	//db, _ := Initialize(nil)
+	//
+	////Temp for testing
 	//request := models.NodeRequestPayload{
 	//	EstimatedSpeed: 100,
-	//	Wallet:         "0x975432957943875235",
+	//	Wallet:         "0x97543295ABC235DDD",
 	//	Name:           "Name",
 	//	Email:          "email@fds.com",
 	//	Bio:            "bio",
 	//	Location:       "location",
+	//	IPAddress:      "0.0.0.0",
 	//}
 	//
-	//NodeApplyToPool(request)
+	//NodeApplyToPool(db, request)
 	//
 	//requestUpdate := models.NodeRequestPayload{
-	//	Wallet:   "0x975432957943875235",
+	//	Wallet:   "0x97543295ABC235DDD",
 	//	Name:     "Name Updated",
 	//	Email:    "email@fds.com Updated",
 	//	Bio:      "bio Updated",
 	//	Location: "location Updated",
 	//}
 	//
-	//_, err := NodeUpdateProfile(requestUpdate)
+	//_, err := NodeUpdateProfile(db, requestUpdate)
 	//if err != nil {
 	//	log.Fatal(err)
 	//}
 	//
 	//// Pool Accepts Application
-	//PoolApplicationStatus("0x975432957943875235", false)
+	//PoolApplicationStatus(db, "0x97543295ABC235DDD", false)
 	//// Node Denies Application
-	//NodeApplicationStatus("0x975432957943875235", false)
+	//NodeApplicationStatus(db, "0x97543295ABC235DDD", false)
 	//
 	//// Pool Accepts Application
-	//PoolApplicationStatus("0x97543293753875235", true)
+	//PoolApplicationStatus(db, "0x97543295ABC235DDD", true)
 	//// Node Denies Application
-	//NodeApplicationStatus("0x97543293753875235", true)
+	//NodeApplicationStatus(db, "0x97543295ABC235DDD", true)
 	//
 	//poolInfo := models.PoolInformation{
 	//	Name:     "Gladius Pool",
@@ -54,7 +57,7 @@ func TempDBCalls() {
 	//	Public:   true,
 	//}
 	//
-	//PoolCreateUpdateData(poolInfo)
+	//PoolCreateUpdateData(db, poolInfo)
 }
 
 func PoolCreateUpdateData(db *gorm.DB, poolInfo models.PoolInformation) {
@@ -66,7 +69,7 @@ func PoolCreateUpdateData(db *gorm.DB, poolInfo models.PoolInformation) {
 
 func NodeApplyToPool(db *gorm.DB, payload models.NodeRequestPayload) {
 	profile := models.CreateApplication(&payload)
-	db.Model(&profile).Where("wallet = ?", payload.Wallet).FirstOrCreate(&profile)
+	db.Model(&profile).Where("wallet like ?", payload.Wallet).FirstOrCreate(&profile)
 }
 
 func NodeUpdateProfile(db *gorm.DB, payload models.NodeRequestPayload) (models.NodeProfile, error) {
@@ -90,7 +93,7 @@ func NodeUpdateProfile(db *gorm.DB, payload models.NodeRequestPayload) (models.N
 func NodeProfile(db *gorm.DB, wallet string) (models.NodeProfile, error) {
 	var profile models.NodeProfile
 
-	if err := db.Model(&profile).Where("wallet = ?", wallet).First(&profile).Error; err != nil {
+	if err := db.Model(&profile).Where("wallet like ?", wallet).First(&profile).Error; err != nil {
 		return models.NodeProfile{}, errors.New("NodeProfile() profile not found for given wallet address")
 	}
 
@@ -99,12 +102,12 @@ func NodeProfile(db *gorm.DB, wallet string) (models.NodeProfile, error) {
 
 func PoolApplicationStatus(db *gorm.DB, wallet string, accepted bool) {
 	profile, _ := NodeProfile(db, wallet)
-	profile.PoolAccepted = sql.NullBool{Valid:true, Bool:accepted}
+	profile.PoolAccepted = sql.NullBool{Valid: true, Bool: accepted}
 	db.Save(&profile)
 }
 
 func NodeApplicationStatus(db *gorm.DB, wallet string, accepted bool) {
 	profile, _ := NodeProfile(db, wallet)
-	profile.NodeAccepted = sql.NullBool{Valid:true, Bool:accepted}
+	profile.NodeAccepted = sql.NullBool{Valid: true, Bool: accepted}
 	db.Save(&profile)
 }

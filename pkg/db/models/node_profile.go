@@ -3,6 +3,7 @@ package models
 import (
 	"github.com/jinzhu/gorm"
 	"database/sql"
+	"strings"
 )
 
 type NodeProfile struct {
@@ -34,7 +35,7 @@ func CreateApplication(payload *NodeRequestPayload) NodeProfile {
 	profile := NodeProfile{
 		IPAddress:      payload.IPAddress,
 		EstimatedSpeed: payload.EstimatedSpeed,
-		Wallet:         payload.Wallet,
+		Wallet:         strings.ToLower(payload.Wallet),
 		Name:           payload.Name,
 		Email:          payload.Email,
 		Bio:            payload.Bio,
@@ -47,6 +48,10 @@ func CreateApplication(payload *NodeRequestPayload) NodeProfile {
 func (profile *NodeProfile) AfterUpdate(tx *gorm.DB) (err error) {
 	if profile.Accepted.Bool != (profile.PoolAccepted.Bool && profile.NodeAccepted.Bool) {
 		tx.Model(&NodeProfile{}).Where("id = ?", profile.ID).Update("accepted", profile.PoolAccepted.Bool && profile.NodeAccepted.Bool)
+	}
+
+	if profile.Wallet != strings.ToLower(profile.Wallet) {
+		tx.Model(&NodeProfile{}).Where("id like ?", profile.Wallet).Update("wallet", strings.ToLower(profile.Wallet))
 	}
 
 	return
