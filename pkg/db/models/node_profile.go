@@ -4,10 +4,16 @@ import (
 	"github.com/jinzhu/gorm"
 	"database/sql"
 	"strings"
+	"time"
 )
 
 type NodeProfile struct {
-	gorm.Model
+	// Default Gorm Model Properties
+	// Stating here to remove from JSON responses with `json:"-"`
+	ID             uint 		`json:"-" gorm:"primary_key"`
+	CreatedAt      time.Time	`json:"-"`
+	UpdatedAt      time.Time	`json:"-"`
+	DeletedAt      *time.Time	`json:"-"`
 
 	Name           string       `json:"name" gorm:"not null"`
 	Email          string       `json:"email" gorm:"not null"`
@@ -17,7 +23,7 @@ type NodeProfile struct {
 	EstimatedSpeed int          `json:"estimatedSpeed" gorm:"not null"`
 	PoolAccepted   sql.NullBool `json:"-" gorm:"default:null"`
 	NodeAccepted   sql.NullBool `json:"-" gorm:"default:null"`
-	Accepted       sql.NullBool `json:"-" gorm:"default:null"`
+	Accepted       sql.NullBool `json:"accepted" gorm:"default:null"`
 	Wallet         string       `json:"wallet" gorm:"not null; unique"`
 }
 
