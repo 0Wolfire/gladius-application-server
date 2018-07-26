@@ -5,7 +5,7 @@ import (
 	"github.com/gladiusio/gladius-application-server/pkg/db/models"
 	"github.com/jinzhu/gorm"
 	"database/sql"
-	)
+)
 
 // temp
 func TempDBCalls() {
@@ -98,6 +98,32 @@ func NodeProfile(db *gorm.DB, wallet string) (models.NodeProfile, error) {
 	}
 
 	return profile, nil
+}
+
+type FullProfile struct {
+	NodeProfile     models.NodeProfile     `json:"profile"`
+	PoolInformation models.PoolInformation `json:"pool"`
+}
+
+func NodePoolApplication(db *gorm.DB, wallet string) (FullProfile, error) {
+	var poolInformation models.PoolInformation
+	var fullProfile FullProfile
+
+	profile, err := NodeProfile(db, wallet)
+	if err != nil {
+		return fullProfile, err
+	}
+
+	poolInformation, err = PoolInformation(db)
+
+	if err != nil {
+		return fullProfile, err
+	}
+
+	return FullProfile{
+		NodeProfile:profile,
+		PoolInformation:poolInformation,
+	}, err
 }
 
 func PoolApplicationStatus(db *gorm.DB, wallet string, accepted bool) {
