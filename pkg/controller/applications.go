@@ -67,9 +67,11 @@ func PoolCreateUpdateData(db *gorm.DB, poolInfo models.PoolInformation) {
 	db.Model(&pool).Updates(&poolInfo)
 }
 
-func NodeApplyToPool(db *gorm.DB, payload models.NodeRequestPayload) {
+func NodeApplyToPool(db *gorm.DB, payload models.NodeRequestPayload) (models.NodeProfile, error) {
 	profile := models.CreateApplication(&payload)
-	db.Model(&profile).Where("wallet like ?", payload.Wallet).FirstOrCreate(&profile)
+	err := db.Model(&profile).Where("wallet like ?", payload.Wallet).FirstOrCreate(&profile).Error
+
+	return profile, err
 }
 
 func NodeUpdateProfile(db *gorm.DB, payload models.NodeRequestPayload) (models.NodeProfile, error) {
