@@ -99,6 +99,9 @@ func NodeProfile(db *gorm.DB, wallet string) (models.NodeProfile, error) {
 		return models.NodeProfile{}, errors.New("NodeProfile() profile not found for given wallet address")
 	}
 
+	profile.Pending = !profile.Accepted.Valid
+	profile.Approved = profile.Accepted.Valid || profile.Accepted.Bool
+
 	return profile, nil
 }
 

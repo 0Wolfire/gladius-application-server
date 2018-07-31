@@ -1,11 +1,15 @@
 package models
 
-import (
-	"github.com/jinzhu/gorm"
-)
+import "time"
 
 type PoolInformation struct {
-	gorm.Model
+	// Default Gorm Model Properties
+	// Stating here to remove from JSON responses with `json:"-"`
+	ID             uint 		`json:"-" gorm:"primary_key"`
+	CreatedAt      time.Time	`json:"-"`
+	UpdatedAt      time.Time	`json:"-"`
+	DeletedAt      *time.Time	`json:"-"`
+
 	OnlyRow   int    `json:"-" gorm:"unique;not null;default:1"`
 	Address   string `json:"address" gorm:"not null"`
 	Name      string `json:"name" gorm:"not null"`
@@ -14,7 +18,7 @@ type PoolInformation struct {
 	Rating    int    `json:"rating"`
 	NodeCount int    `json:"nodeCount" gorm:"not null;default:0"`
 	Wallet    string `json:"wallet" gorm:"not null"`
-	Public    bool   `json:"public" grom:"not null;default:false"`
+	Public    bool   `json:"public" gorm:"not null;default:false"`
 }
 
 func (PoolInformation) TableName() string {

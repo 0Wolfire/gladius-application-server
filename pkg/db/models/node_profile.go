@@ -10,11 +10,10 @@ import (
 type NodeProfile struct {
 	// Default Gorm Model Properties
 	// Stating here to remove from JSON responses with `json:"-"`
-	ID             uint 		`json:"-" gorm:"primary_key"`
-	CreatedAt      time.Time	`json:"-"`
-	UpdatedAt      time.Time	`json:"-"`
-	DeletedAt      *time.Time	`json:"-"`
-
+	ID             uint         `json:"-" gorm:"primary_key"`
+	CreatedAt      time.Time    `json:"-"`
+	UpdatedAt      time.Time    `json:"-"`
+	DeletedAt      *time.Time   `json:"-"`
 	Name           string       `json:"name" gorm:"not null"`
 	Email          string       `json:"email" gorm:"not null"`
 	Bio            string       `json:"bio" gorm:"not null"`
@@ -23,7 +22,9 @@ type NodeProfile struct {
 	EstimatedSpeed int          `json:"estimatedSpeed" gorm:"not null"`
 	PoolAccepted   sql.NullBool `json:"-" gorm:"default:null"`
 	NodeAccepted   sql.NullBool `json:"-" gorm:"default:null"`
-	Accepted       sql.NullBool `json:"accepted" gorm:"default:null"`
+	Accepted       sql.NullBool `json:"-" gorm:"default:null"`
+	Pending        bool         `json:"pending" gorm:"-"`
+	Approved       bool         `json:"approved" gorm:"-"`
 	Wallet         string       `json:"wallet" gorm:"not null; unique"`
 }
 
@@ -46,6 +47,8 @@ func CreateApplication(payload *NodeRequestPayload) NodeProfile {
 		Email:          payload.Email,
 		Bio:            payload.Bio,
 		Location:       payload.Location,
+		Approved:       false,
+		Pending:        true,
 	}
 
 	return profile
