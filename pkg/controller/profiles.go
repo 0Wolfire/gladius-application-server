@@ -32,7 +32,7 @@ func NodesPendingNodeConfirmation(db *gorm.DB) ([]models.NodeProfile, error) {
 func NodesAccepted(db *gorm.DB) ([]models.NodeProfile, error) {
 	var profiles []models.NodeProfile
 
-	err := db.Where("accepted is ?", true).Find(&profiles).Error
+	err := db.Where("accepted is ?", "true").Find(&profiles).Error
 
 	return profiles, err
 }
@@ -40,7 +40,7 @@ func NodesAccepted(db *gorm.DB) ([]models.NodeProfile, error) {
 func NodesRejected(db *gorm.DB) ([]models.NodeProfile, error) {
 	var profiles []models.NodeProfile
 
-	err := db.Where("accepted = ?", false).Find(&profiles).Error
+	err := db.Where("accepted is ?", "false").Find(&profiles).Error
 
 	return profiles, err
 }
