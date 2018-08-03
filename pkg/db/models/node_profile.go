@@ -2,7 +2,6 @@ package models
 
 import (
 	"github.com/jinzhu/gorm"
-	"database/sql"
 	"strings"
 	"time"
 )
@@ -10,22 +9,21 @@ import (
 type NodeProfile struct {
 	// Default Gorm Model Properties
 	// Stating here to remove from JSON responses with `json:"-"`
-	ID             uint         `json:"-" gorm:"primary_key"`
-	CreatedAt      time.Time    `json:"-"`
-	UpdatedAt      time.Time    `json:"-"`
-	DeletedAt      *time.Time   `json:"-"`
-	Name           string       `json:"name" gorm:"not null"`
-	Email          string       `json:"email" gorm:"not null"`
-	Bio            string       `json:"bio" gorm:"not null"`
-	Location       string       `json:"location" gorm:"not null"`
-	IPAddress      string       `json:"-" gorm:"not null"`
-	EstimatedSpeed int          `json:"estimatedSpeed" gorm:"not null"`
-	PoolAccepted   sql.NullBool `json:"-" gorm:"default:null"`
-	NodeAccepted   sql.NullBool `json:"-" gorm:"default:null"`
-	Accepted       sql.NullBool `json:"-" gorm:"default:null"`
-	Pending        bool         `json:"pending" gorm:"-"`
-	Approved       bool         `json:"approved" gorm:"-"`
-	Wallet         string       `json:"wallet" gorm:"not null; unique"`
+	ID             uint       `json:"-" gorm:"primary_key"`
+	CreatedAt      time.Time  `json:"-"`
+	UpdatedAt      time.Time  `json:"-"`
+	DeletedAt      *time.Time `json:"-"`
+	Name           string     `json:"name" gorm:"not null"`
+	Email          string     `json:"email" gorm:"not null"`
+	Bio            string     `json:"bio" gorm:"not null"`
+	Location       string     `json:"location" gorm:"not null"`
+	IPAddress      string     `json:"-" gorm:"not null"`
+	EstimatedSpeed int        `json:"estimatedSpeed" gorm:"not null"`
+	PoolAccepted   bool       `json:"-" gorm:"default:false"`
+	NodeAccepted   bool       `json:"-" gorm:"default:false"`
+	Pending        bool       `json:"pending" gorm:"default:true"`
+	Approved       bool       `json:"approved" gorm:"default:false"`
+	Wallet         string     `json:"wallet" gorm:"not null; unique"`
 }
 
 type NodeRequestPayload struct {
@@ -47,16 +45,15 @@ func CreateApplication(payload *NodeRequestPayload) NodeProfile {
 		Email:          payload.Email,
 		Bio:            payload.Bio,
 		Location:       payload.Location,
-		Approved:       false,
-		Pending:        true,
 	}
 
 	return profile
 }
 
 func (profile *NodeProfile) AfterUpdate(tx *gorm.DB) (err error) {
-	if profile.Accepted.Bool != (profile.PoolAccepted.Bool && profile.NodeAccepted.Bool) {
-		tx.Model(&NodeProfile{}).Where("id = ?", profile.ID).Update("accepted", profile.PoolAccepted.Bool && profile.NodeAccepted.Bool)
+	if !profile.Pending && (profile.Approved != (profile.PoolAccepted && profile.NodeAccepted)) {
+		tx.Model(&NodeProfile{}).Where("id = ?", profile.ID).
+			Update("accepted", profile.PoolAccepted && profile.NodeAccepted)
 	}
 
 	if profile.Wallet != strings.ToLower(profile.Wallet) {

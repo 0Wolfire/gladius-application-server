@@ -4,8 +4,7 @@ import (
 	"errors"
 	"github.com/gladiusio/gladius-application-server/pkg/db/models"
 	"github.com/jinzhu/gorm"
-	"database/sql"
-)
+	)
 
 // temp
 func TempDBCalls() {
@@ -99,9 +98,6 @@ func NodeProfile(db *gorm.DB, wallet string) (models.NodeProfile, error) {
 		return models.NodeProfile{}, errors.New("NodeProfile() profile not found for given wallet address")
 	}
 
-	profile.Pending = !profile.Accepted.Valid
-	profile.Approved = profile.Accepted.Valid || profile.Accepted.Bool
-
 	return profile, nil
 }
 
@@ -133,12 +129,10 @@ func NodePoolApplication(db *gorm.DB, wallet string) (FullProfile, error) {
 
 func PoolApplicationStatus(db *gorm.DB, wallet string, accepted bool) {
 	profile, _ := NodeProfile(db, wallet)
-	profile.PoolAccepted = sql.NullBool{Valid: true, Bool: accepted}
 	db.Save(&profile)
 }
 
 func NodeApplicationStatus(db *gorm.DB, wallet string, accepted bool) {
 	profile, _ := NodeProfile(db, wallet)
-	profile.NodeAccepted = sql.NullBool{Valid: true, Bool: accepted}
 	db.Save(&profile)
 }
