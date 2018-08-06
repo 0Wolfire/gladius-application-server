@@ -6,8 +6,6 @@ import (
 )
 
 func Initialize(db *gorm.DB) (*gorm.DB, error) {
-	defer db.Close()
-
 	var err error
 
 	if db == nil {

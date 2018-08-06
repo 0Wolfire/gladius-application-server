@@ -6,8 +6,6 @@ import (
 )
 
 func Nodes(db *gorm.DB) ([]models.NodeProfile, error) {
-	defer db.Close()
-
 	var profiles []models.NodeProfile
 
 	err := db.Find(&profiles).Error
@@ -16,8 +14,6 @@ func Nodes(db *gorm.DB) ([]models.NodeProfile, error) {
 }
 
 func NodesPendingPoolConfirmation(db *gorm.DB) ([]models.NodeProfile, error) {
-	defer db.Close()
-
 	var profiles []models.NodeProfile
 
 	err := db.Where("pool_accepted is ?", nil).Find(&profiles).Error
@@ -26,8 +22,6 @@ func NodesPendingPoolConfirmation(db *gorm.DB) ([]models.NodeProfile, error) {
 }
 
 func NodesPendingNodeConfirmation(db *gorm.DB) ([]models.NodeProfile, error) {
-	defer db.Close()
-
 	var profiles []models.NodeProfile
 
 	err := db.Where("pool_accepted is ? AND node_accepted is ?", "true", nil).Find(&profiles).Error
@@ -36,8 +30,6 @@ func NodesPendingNodeConfirmation(db *gorm.DB) ([]models.NodeProfile, error) {
 }
 
 func NodesAccepted(db *gorm.DB) ([]models.NodeProfile, error) {
-	defer db.Close()
-
 	var profiles []models.NodeProfile
 
 	err := db.Where("accepted is ?", "true").Find(&profiles).Error
@@ -46,8 +38,6 @@ func NodesAccepted(db *gorm.DB) ([]models.NodeProfile, error) {
 }
 
 func NodesRejected(db *gorm.DB) ([]models.NodeProfile, error) {
-	defer db.Close()
-
 	var profiles []models.NodeProfile
 
 	err := db.Where("pool_accepted is ? OR node_accepted is ? OR accepted is ?", "false", "false", "false").Find(&profiles).Error

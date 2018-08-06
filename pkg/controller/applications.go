@@ -115,8 +115,6 @@ type FullProfile struct {
 }
 
 func NodePoolApplication(db *gorm.DB, wallet string) (FullProfile, error) {
-	defer db.Close()
-
 	var poolInformation models.PoolInformation
 	var fullProfile FullProfile
 
@@ -138,15 +136,11 @@ func NodePoolApplication(db *gorm.DB, wallet string) (FullProfile, error) {
 }
 
 func PoolApplicationStatus(db *gorm.DB, wallet string, accepted bool) {
-	defer db.Close()
-
 	profile, _ := NodeProfile(db, wallet)
 	db.Save(&profile)
 }
 
 func NodeApplicationStatus(db *gorm.DB, wallet string, accepted bool) {
-	defer db.Close()
-
 	profile, _ := NodeProfile(db, wallet)
 	db.Save(&profile)
 }

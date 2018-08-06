@@ -6,8 +6,6 @@ import (
 )
 
 func PoolInformation(db *gorm.DB) (models.PoolInformation, error) {
-	defer db.Close()
-
 	var profile models.PoolInformation
 
 	err := db.First(&profile).Error
