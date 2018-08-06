@@ -60,6 +60,8 @@ func TempDBCalls() {
 }
 
 func PoolCreateUpdateData(db *gorm.DB, poolInfo models.PoolInformation) {
+	defer db.Close()
+
 	var pool models.PoolInformation
 
 	db.Model(&pool).FirstOrCreate(&pool)
@@ -67,6 +69,8 @@ func PoolCreateUpdateData(db *gorm.DB, poolInfo models.PoolInformation) {
 }
 
 func NodeApplyToPool(db *gorm.DB, payload models.NodeRequestPayload) (models.NodeProfile, error) {
+	defer db.Close()
+
 	profile := models.CreateApplication(&payload)
 	err := db.Model(&profile).Where("wallet like ?", payload.Wallet).FirstOrCreate(&profile).Error
 
@@ -74,6 +78,8 @@ func NodeApplyToPool(db *gorm.DB, payload models.NodeRequestPayload) (models.Nod
 }
 
 func NodeUpdateProfile(db *gorm.DB, payload models.NodeRequestPayload) (models.NodeProfile, error) {
+	defer db.Close()
+
 	profile, err := NodeProfile(db, payload.Wallet)
 	if err != nil {
 		return profile, err
@@ -92,6 +98,8 @@ func NodeUpdateProfile(db *gorm.DB, payload models.NodeRequestPayload) (models.N
 }
 
 func NodeProfile(db *gorm.DB, wallet string) (models.NodeProfile, error) {
+	defer db.Close()
+
 	var profile models.NodeProfile
 
 	if err := db.Model(&profile).Where("wallet like ?", wallet).First(&profile).Error; err != nil {
@@ -107,6 +115,8 @@ type FullProfile struct {
 }
 
 func NodePoolApplication(db *gorm.DB, wallet string) (FullProfile, error) {
+	defer db.Close()
+
 	var poolInformation models.PoolInformation
 	var fullProfile FullProfile
 
@@ -128,11 +138,15 @@ func NodePoolApplication(db *gorm.DB, wallet string) (FullProfile, error) {
 }
 
 func PoolApplicationStatus(db *gorm.DB, wallet string, accepted bool) {
+	defer db.Close()
+
 	profile, _ := NodeProfile(db, wallet)
 	db.Save(&profile)
 }
 
 func NodeApplicationStatus(db *gorm.DB, wallet string, accepted bool) {
+	defer db.Close()
+
 	profile, _ := NodeProfile(db, wallet)
 	db.Save(&profile)
 }
