@@ -11,7 +11,6 @@ func Initialize() {
 	if err != nil {
 		panic("failed to connect database")
 	}
-	defer db.Close()
 
 	// Migrate the schemas
 	db.AutoMigrate(&models.PoolInformation{})
