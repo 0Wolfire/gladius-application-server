@@ -94,7 +94,7 @@ func NodeUpdateProfile(db *gorm.DB, payload models.NodeRequestPayload) (models.N
 func NodeProfile(db *gorm.DB, wallet string) (models.NodeProfile, error) {
 	var profile models.NodeProfile
 
-	if err := db.Model(&profile).Where("wallet like ?", wallet).First(&profile).Error; err != nil {
+	if err := db.Model(&profile).Where("wallet ILIKE ?", wallet).First(&profile).Error; err != nil {
 		return models.NodeProfile{}, errors.New("NodeProfile() profile not found for given wallet address")
 	}
 

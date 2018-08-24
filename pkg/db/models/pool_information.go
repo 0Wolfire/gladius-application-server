@@ -18,6 +18,7 @@ type PoolInformation struct {
 	Rating    int    `json:"rating"`
 	NodeCount int    `json:"nodeCount" gorm:"not null;default:0"`
 	Wallet    string `json:"wallet" gorm:"not null"`
+	Email	  string `json:"email" gorm:"not null"`
 	Public    bool   `json:"public" gorm:"not null;default:false"`
 }
 
