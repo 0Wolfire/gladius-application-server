@@ -44,3 +44,12 @@ func NodesRejected(db *gorm.DB) ([]models.NodeProfile, error) {
 
 	return profiles, err
 }
+
+func NodeInPool(db *gorm.DB, walletAddress string) (bool, error) {
+	var profile models.NodeProfile
+	var count int
+
+	err := db.Model(&profile).Where("lower(wallet) like lower(?)", walletAddress).First(&profile).Count(&count).Error
+
+	return count > 0, err
+}
