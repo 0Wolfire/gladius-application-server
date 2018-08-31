@@ -24,7 +24,7 @@ func NodesPendingPoolConfirmation(db *gorm.DB) ([]models.NodeProfile, error) {
 func NodesPendingNodeConfirmation(db *gorm.DB) ([]models.NodeProfile, error) {
 	var profiles []models.NodeProfile
 
-	err := db.Where("pool_accepted is ? AND node_accepted is ?", "true", nil).Find(&profiles).Error
+	err := db.Where("pool_accepted = ? AND node_accepted = ?", "true", nil).Find(&profiles).Error
 
 	return profiles, err
 }
@@ -32,7 +32,7 @@ func NodesPendingNodeConfirmation(db *gorm.DB) ([]models.NodeProfile, error) {
 func NodesAccepted(db *gorm.DB) ([]models.NodeProfile, error) {
 	var profiles []models.NodeProfile
 
-	err := db.Where("approved is ? AND pending is ?", "true", "false").Find(&profiles).Error
+	err := db.Where("approved = ? AND pending = ?", "true", "false").Find(&profiles).Error
 
 	return profiles, err
 }
@@ -40,7 +40,7 @@ func NodesAccepted(db *gorm.DB) ([]models.NodeProfile, error) {
 func NodesRejected(db *gorm.DB) ([]models.NodeProfile, error) {
 	var profiles []models.NodeProfile
 
-	err := db.Where("pool_accepted is ? OR node_accepted is ? OR accepted is ?", "false", "false", "false").Find(&profiles).Error
+	err := db.Where("pool_accepted = ? OR node_accepted = ? OR accepted = ?", "false", "false", "false").Find(&profiles).Error
 
 	return profiles, err
 }
