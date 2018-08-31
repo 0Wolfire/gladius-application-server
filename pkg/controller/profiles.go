@@ -32,7 +32,7 @@ func NodesPendingNodeConfirmation(db *gorm.DB) ([]models.NodeProfile, error) {
 func NodesAccepted(db *gorm.DB) ([]models.NodeProfile, error) {
 	var profiles []models.NodeProfile
 
-	err := db.Where("accepted is ?", "true").Find(&profiles).Error
+	err := db.Where("approved is ? AND pending is ?", "true", "false").Find(&profiles).Error
 
 	return profiles, err
 }
