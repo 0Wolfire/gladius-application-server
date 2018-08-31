@@ -40,7 +40,7 @@ func NodesAccepted(db *gorm.DB) ([]models.NodeProfile, error) {
 func NodesRejected(db *gorm.DB) ([]models.NodeProfile, error) {
 	var profiles []models.NodeProfile
 
-	err := db.Where("pool_accepted = ? OR node_accepted = ? OR accepted = ?", "false", "false", "false").Find(&profiles).Error
+	err := db.Where("pool_accepted = ? OR node_accepted = ? OR approved = ?", "false", "false", "false").Find(&profiles).Error
 
 	return profiles, err
 }
@@ -49,7 +49,7 @@ func NodeInPool(db *gorm.DB, walletAddress string) (bool, error) {
 	var profile models.NodeProfile
 	var count int
 
-	err := db.Model(&profile).Where("lower(wallet) like lower(?)", walletAddress).First(&profile).Count(&count).Error
+	err := db.Model(&profile).Where("lower(wallet) like lower(?) AND approved = ?", walletAddress, "true").First(&profile).Count(&count).Error
 
 	return count > 0, err
 }
