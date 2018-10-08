@@ -1,8 +1,8 @@
 package controller
 
 import (
+	"github.com/gladiusio/gladius-common/pkg/db/models"
 	"github.com/jinzhu/gorm"
-	"github.com/gladiusio/gladius-application-server/pkg/db/models"
 )
 
 func Initialize(db *gorm.DB) (*gorm.DB, error) {

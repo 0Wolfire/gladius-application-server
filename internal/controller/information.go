@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"github.com/gladiusio/gladius-application-server/pkg/db/models"
+	"github.com/gladiusio/gladius-common/pkg/db/models"
 	"github.com/jinzhu/gorm"
 )
 
