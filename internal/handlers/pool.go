@@ -31,7 +31,7 @@ func PoolContainsNode(database *gorm.DB) func(w http.ResponseWriter, r *http.Req
 		walletAddress := vars["walletAddress"]
 		containsWallet, err := controller.NodeInPool(database, walletAddress)
 		if err != nil {
-			handlers.ErrorHandler(w, r, "Could not query server", err, http.StatusInternalServerError)
+			handlers.ErrorHandler(w, r, "Could not find record", err, http.StatusNotFound)
 			return
 		}
 

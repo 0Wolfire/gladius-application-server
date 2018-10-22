@@ -72,8 +72,8 @@ func PoolEditApplicationHandler(db *gorm.DB) func(w http.ResponseWriter, r *http
 			return
 		}
 
-		controller.NodeUpdateProfile(db, requestPayload)
-		viewApplication(w, r, db)
+		profile, err := controller.NodeUpdateProfile(db, requestPayload)
+		handlers.ResponseHandler(w, r, "null", true, nil, profile, nil)
 	}
 }
 
@@ -83,20 +83,37 @@ func PoolViewApplicationHandler(db *gorm.DB) func(w http.ResponseWriter, r *http
 	}
 }
 
-func getSignedMessage(r *http.Request) (signature.SignedMessage, error) {
+type MessageRequest struct {
+	Message   *json.RawMessage 			`json:"message"`
+	Hash      string           `json:"hash"`
+	Signature string           `json:"signature"`
+	Address   string           `json:"address"`
+}
+
+func (request *MessageRequest) messageString() string  {
+	messageString, err := request.Message.MarshalJSON()
+	if err != nil {
+		return ""
+	}
+
+	return string(messageString)
+}
+
+func getSignedMessage(r *http.Request) (*signature.SignedMessage, error) {
 	decoder := json.NewDecoder(r.Body)
 	defer r.Body.Close()
 
-	var signedMessage signature.SignedMessage
-	err := decoder.Decode(&signedMessage)
+	var messageRequest MessageRequest
+	err := decoder.Decode(&messageRequest)
 	if err != nil {
-		return signature.SignedMessage{}, err
+		return nil, err
 	}
 
-	return signedMessage, nil
+	parsedSignedMessage, err := signature.ParseSignedMessage(messageRequest.messageString(), messageRequest.Hash, messageRequest.Signature, messageRequest.Address)
+	return parsedSignedMessage, err
 }
 
-func getMessage(signedMessage signature.SignedMessage) (message.Message, error) {
+func getMessage(signedMessage *signature.SignedMessage) (message.Message, error) {
 	if signedMessage.Message == nil || !signedMessage.IsVerified() {
 		return message.Message{}, errors.New("Message failed verification")
 	}
@@ -135,7 +152,7 @@ func getRequestPayload(r *http.Request) (models.NodeRequestPayload, error) {
 	return requestPayload, nil
 }
 
-func getProfile(signedMessage signature.SignedMessage, db *gorm.DB) (controller.FullProfile, error) {
+func getProfile(signedMessage *signature.SignedMessage, db *gorm.DB) (controller.FullProfile, error) {
 	if !signedMessage.IsVerified() {
 		return controller.FullProfile{}, errors.New("Message could not be verified")
 	}

@@ -5,7 +5,6 @@ require (
 	github.com/BurntSushi/toml v0.3.1 // indirect
 	github.com/DataDog/datadog-go v0.0.0-20180822151419-281ae9f2d895 // indirect
 	github.com/beorn7/perks v0.0.0-20180321164747-3a771d992973 // indirect
-	github.com/btcsuite/btcd v0.0.0-20180924021209-2a560b2036be // indirect
 	github.com/cespare/cp v1.0.0 // indirect
 	github.com/circonus-labs/circonus-gometrics v2.2.4+incompatible // indirect
 	github.com/circonus-labs/circonusllhist v0.0.0-20180430145027-5eb751da55c6 // indirect
@@ -13,12 +12,10 @@ require (
 	github.com/edsrzf/mmap-go v0.0.0-20170320065105-0bce6a688712 // indirect
 	github.com/erikstmartin/go-testdb v0.0.0-20160219214506-8d10e4a1bae5 // indirect
 	github.com/fjl/memsize v0.0.0-20180929194037-2a09253e352a // indirect
-	github.com/gladiusio/gladius-common v0.0.0-20181008221925-a84e9ae05f15
+	github.com/gladiusio/gladius-common v0.0.0-20181016185714-596a48d77043
 	github.com/gladiusio/gladius-p2p v0.0.0-20181008220948-6743a31a69fd
 	github.com/go-sql-driver/mysql v1.4.0 // indirect
 	github.com/google/go-cmp v0.2.0 // indirect
-	github.com/gorilla/context v1.1.1 // indirect
-	github.com/gorilla/handlers v1.4.0 // indirect
 	github.com/gorilla/mux v1.6.2
 	github.com/hashicorp/consul v1.2.3 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.0 // indirect
@@ -30,26 +27,20 @@ require (
 	github.com/jinzhu/gorm v1.9.1
 	github.com/jinzhu/now v0.0.0-20180511015916-ed742868f2ae // indirect
 	github.com/karalabe/hid v0.0.0-20180420081245-2b4488a37358 // indirect
-	github.com/kardianos/osext v0.0.0-20170510131534-ae77be60afb1 // indirect
 	github.com/lib/pq v1.0.0 // indirect
-	github.com/mattn/go-colorable v0.0.9 // indirect
-	github.com/mattn/go-isatty v0.0.4 // indirect
-	github.com/mattn/go-sqlite3 v1.9.0 // indirect
 	github.com/matttproud/golang_protobuf_extensions v1.0.1 // indirect
 	github.com/onsi/gomega v1.4.2 // indirect
 	github.com/pascaldekloe/goe v0.0.0-20180627143212-57f6aae5913c // indirect
 	github.com/pkg/errors v0.8.0
-	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/prometheus/client_golang v0.8.0 // indirect
 	github.com/prometheus/client_model v0.0.0-20180712105110-5c3871d89910 // indirect
 	github.com/prometheus/common v0.0.0-20180801064454-c7de2306084e // indirect
 	github.com/prometheus/procfs v0.0.0-20181005140218-185b4288413d // indirect
+	github.com/rs/zerolog v1.9.1
 	github.com/spf13/viper v1.2.1
-	github.com/stretchr/testify v1.2.2 // indirect
 	github.com/tdewolff/test v0.0.0-20171106182207-265427085153 // indirect
 	github.com/tv42/httpunix v0.0.0-20150427012821-b75d8614f926 // indirect
 	google.golang.org/appengine v1.2.0 // indirect
-	gopkg.in/natefinch/npipe.v2 v2.0.0-20160621034901-c1b8fa8bdcce // indirect
 	gopkg.in/urfave/cli.v1 v1.20.0 // indirect
 	gopkg.in/vmihailenco/msgpack.v2 v2.9.1 // indirect
 )

@@ -2,7 +2,6 @@ package routing
 
 import (
 	"github.com/gladiusio/gladius-application-server/internal/handlers"
-	"github.com/gladiusio/gladius-common/pkg/blockchain"
 	chandlers "github.com/gladiusio/gladius-common/pkg/handlers"
 	"github.com/gladiusio/gladius-common/pkg/routing"
 	"github.com/gorilla/mux"
@@ -11,14 +10,9 @@ import (
 	"net/http"
 )
 
-var apiRouter *mux.Router
-var db *gorm.DB
-
-func AppendServerEndpoints(router *mux.Router) error {
-	// Initialize Base API sub-route
-	routing.InitializeAPISubRoutes(router)
+func AppendServerEndpoints(router *mux.Router, db *gorm.DB) error {
 	// Applications
-	applicationRouter := apiRouter.PathPrefix("/server").Subrouter()
+	applicationRouter := router.PathPrefix("/server").Subrouter().StrictSlash(true)
 	applicationRouter.HandleFunc("/info", handlers.PublicPoolInformationHandler(db)).
 		Methods(http.MethodGet)
 
@@ -26,11 +20,8 @@ func AppendServerEndpoints(router *mux.Router) error {
 }
 
 func AppendStatusEndpoints(router *mux.Router) error {
-	// Initialize Base API sub-route
-	routing.InitializeAPISubRoutes(router)
-
 	// TxHash Status Sub-Routes
-	statusRouter := apiRouter.PathPrefix("/status").Subrouter()
+	statusRouter := router.PathPrefix("/status").Subrouter().StrictSlash(true)
 	statusRouter.HandleFunc("/", chandlers.StatusHandler).
 		Methods(http.MethodGet, http.MethodPut).
 		Name("status")
@@ -42,11 +33,8 @@ func AppendStatusEndpoints(router *mux.Router) error {
 }
 
 func AppendApplicationEndpoints(router *mux.Router, db *gorm.DB) error {
-	// Initialize Base API sub-route
-	routing.InitializeAPISubRoutes(router)
-
 	// Applications
-	applicationRouter := apiRouter.PathPrefix("/applications").Subrouter()
+	applicationRouter := router.PathPrefix("/applications").Subrouter().StrictSlash(true)
 	applicationRouter.HandleFunc("/new", handlers.PoolNewApplicationHandler(db)).
 		Methods(http.MethodPost)
 	applicationRouter.HandleFunc("/edit", handlers.PoolEditApplicationHandler(db)).
@@ -61,38 +49,25 @@ func AppendApplicationEndpoints(router *mux.Router, db *gorm.DB) error {
 	return nil
 }
 
-func setupRouter() (*mux.Router, *blockchain.GladiusAccountManager) {
+func ApplicationServerRouter(db *gorm.DB) *mux.Router {
 	router, err := routing.InitializeRouter()
 	if err != nil {
-		println("Failed to initialized router")
+		println("Failed to initialize router")
 	}
 
-	// Create a new GladiusAccountManager for the routes, this is so we can have
-	// a shared account system between all endpoints
-	ga := blockchain.NewGladiusAccountManager()
+	apiRouter := routing.InitializeAPISubRoutes(router)
 
-	return router, ga
-}
-
-func ApplicationServerRouter(db *gorm.DB) *mux.Router {
-	router, _ := setupRouter()
-
-	//err := AppendAccountManagementEndpoints(router)
-	//if err != nil {
-	//	log.Fatalln("Failed to append Account Management Endpoints")
-	//}
-
-	err := AppendStatusEndpoints(router)
+	err = AppendStatusEndpoints(apiRouter)
 	if err != nil {
 		log.Fatalln("Failed to append Status Endpoints")
 	}
 
-	err = AppendServerEndpoints(router)
+	err = AppendServerEndpoints(apiRouter, db)
 	if err != nil {
 		log.Fatalln("Failed to append Server Endpoints")
 	}
 
-	err = AppendApplicationEndpoints(router, db)
+	err = AppendApplicationEndpoints(apiRouter, db)
 	if err != nil {
 		log.Fatalln("Failed to append Application Endpoints")
 	}
