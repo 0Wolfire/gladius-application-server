@@ -53,8 +53,6 @@ func buildOptions(base string) {
 	// Blockchain options
 	ConfigOption("Blockchain.Provider", "https://mainnet.infura.io/tjqLYxxGIUp0NylVCiWw")
 	ConfigOption("Blockchain.MarketAddress", "0x27a9390283236f836a0b3c8dfdbed2ed854322fc")
-	ConfigOption("Blockchain.PoolUrl", "http://174.138.111.1/api/")
-	ConfigOption("Blockchain.PoolManagerAddress", "0x9717EaDbfE344457135a4f1fA8AE3B11B4CAB0b7")
 
 	// API options
 	ConfigOption("API.Port", 3333)
@@ -64,6 +62,7 @@ func buildOptions(base string) {
 	// Database
 	ConfigOption("Database.Type", "sqlite3")
 	ConfigOption("Database.Connection", "local.db")
+	ConfigOption("Database.InitializePoolInfo", true)
 
 	// Service
 	ConfigOption("Service.Name", "GladiusApplicationServer")
@@ -105,6 +104,10 @@ func initializeDatabase(dbType, dbConnection string) {
 	Database, err = controller.Initialize(db)
 	if err != nil {
 		log.Fatal()
+	}
+
+	if viper.GetBool("Database.InitializePoolInfo") {
+		controller.InitializePoolManager(db)
 	}
 }
 

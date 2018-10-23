@@ -12,7 +12,7 @@ require (
 	github.com/edsrzf/mmap-go v0.0.0-20170320065105-0bce6a688712 // indirect
 	github.com/erikstmartin/go-testdb v0.0.0-20160219214506-8d10e4a1bae5 // indirect
 	github.com/fjl/memsize v0.0.0-20180929194037-2a09253e352a // indirect
-	github.com/gladiusio/gladius-common v0.0.0-20181016185714-596a48d77043
+	github.com/gladiusio/gladius-common v0.0.0-20181022194151-2f1dfe603cbe
 	github.com/gladiusio/gladius-p2p v0.0.0-20181008220948-6743a31a69fd
 	github.com/go-sql-driver/mysql v1.4.0 // indirect
 	github.com/google/go-cmp v0.2.0 // indirect
