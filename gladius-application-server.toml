@@ -21,7 +21,7 @@
   initializePoolInfo          = true
 
 [Service]
-  name                        = "GladiusApplicationServer"
+  name                        = "gladius-application-server"
   displayName                 = "Application Server"
   description                 = "Gladius Application Server"
   debug                       = true
