@@ -2,12 +2,12 @@ package controller
 
 import (
 	"errors"
-	"github.com/gladiusio/gladius-application-server/pkg/db/models"
+	"github.com/gladiusio/gladius-common/pkg/db/models"
 	"github.com/jinzhu/gorm"
-	)
+)
 
 // temp
-func TempDBCalls() {
+//func TempDBCalls() {
 	//db, _ := Initialize(nil)
 	//
 	////Temp for testing
@@ -57,14 +57,14 @@ func TempDBCalls() {
 	//}
 	//
 	//PoolCreateUpdateData(db, poolInfo)
-}
+//}
 
-func PoolCreateUpdateData(db *gorm.DB, poolInfo models.PoolInformation) {
-	var pool models.PoolInformation
-
-	db.Model(&pool).FirstOrCreate(&pool)
-	db.Model(&pool).Updates(&poolInfo)
-}
+//func PoolCreateUpdateData(db *gorm.DB, poolInfo models.PoolInformation) {
+//	var pool models.PoolInformation
+//
+//	db.Model(&pool).FirstOrCreate(&pool)
+//	db.Model(&pool).Updates(&poolInfo)
+//}
 
 func NodeApplyToPool(db *gorm.DB, payload models.NodeRequestPayload) (models.NodeProfile, error) {
 	profile := models.CreateApplication(&payload)
@@ -122,17 +122,17 @@ func NodePoolApplication(db *gorm.DB, wallet string) (FullProfile, error) {
 	}
 
 	return FullProfile{
-		NodeProfile:profile,
-		PoolInformation:poolInformation,
+		NodeProfile:     profile,
+		PoolInformation: poolInformation,
 	}, err
 }
-
-func PoolApplicationStatus(db *gorm.DB, wallet string, accepted bool) {
-	profile, _ := NodeProfile(db, wallet)
-	db.Save(&profile)
-}
-
-func NodeApplicationStatus(db *gorm.DB, wallet string, accepted bool) {
-	profile, _ := NodeProfile(db, wallet)
-	db.Save(&profile)
-}
+//
+//func PoolApplicationStatus(db *gorm.DB, wallet string, accepted bool) {
+//	profile, _ := NodeProfile(db, wallet)
+//	db.Save(&profile)
+//}
+//
+//func NodeApplicationStatus(db *gorm.DB, wallet string, accepted bool) {
+//	profile, _ := NodeProfile(db, wallet)
+//	db.Save(&profile)
+//}
