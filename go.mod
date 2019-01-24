@@ -5,14 +5,12 @@ require (
 	github.com/BurntSushi/toml v0.3.1 // indirect
 	github.com/DataDog/datadog-go v0.0.0-20180822151419-281ae9f2d895 // indirect
 	github.com/beorn7/perks v0.0.0-20180321164747-3a771d992973 // indirect
-	github.com/cespare/cp v1.0.0 // indirect
 	github.com/circonus-labs/circonus-gometrics v2.2.4+incompatible // indirect
 	github.com/circonus-labs/circonusllhist v0.0.0-20180430145027-5eb751da55c6 // indirect
 	github.com/denisenkom/go-mssqldb v0.0.0-20180901172138-1eb28afdf9b6 // indirect
-	github.com/edsrzf/mmap-go v0.0.0-20170320065105-0bce6a688712 // indirect
 	github.com/erikstmartin/go-testdb v0.0.0-20160219214506-8d10e4a1bae5 // indirect
 	github.com/fjl/memsize v0.0.0-20180929194037-2a09253e352a // indirect
-	github.com/gladiusio/gladius-common v0.0.0-20181022194151-2f1dfe603cbe
+	github.com/gladiusio/gladius-common v0.1.4
 	github.com/gladiusio/gladius-p2p v0.0.0-20181008220948-6743a31a69fd
 	github.com/go-sql-driver/mysql v1.4.0 // indirect
 	github.com/google/go-cmp v0.2.0 // indirect
@@ -24,7 +22,7 @@ require (
 	github.com/hashicorp/yamux v0.0.0-20180917205041-7221087c3d28 // indirect
 	github.com/huin/goupnp v0.0.0-20180415215157-1395d1447324 // indirect
 	github.com/jackpal/go-nat-pmp v1.0.1 // indirect
-	github.com/jinzhu/gorm v1.9.1
+	github.com/jinzhu/gorm v1.9.2
 	github.com/jinzhu/now v0.0.0-20180511015916-ed742868f2ae // indirect
 	github.com/karalabe/hid v0.0.0-20180420081245-2b4488a37358 // indirect
 	github.com/lib/pq v1.0.0 // indirect

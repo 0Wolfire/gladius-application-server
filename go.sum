@@ -40,6 +40,8 @@ github.com/gladiusio/gladius-application-server v0.0.0-20180831154555-75ec8b96ba
 github.com/gladiusio/gladius-cli v0.0.0-20180821194358-283e3c80a6d0/go.mod h1:neMK8iVASsY3DWXW0eJ/qpP/+A47ZkVm3Dd8WX40tA8=
 github.com/gladiusio/gladius-common v0.0.0-20181022194151-2f1dfe603cbe h1:s7mX0k4knbs5JQtfJzbyvRUiVzIOEWgAe9jfeT7c1/Q=
 github.com/gladiusio/gladius-common v0.0.0-20181022194151-2f1dfe603cbe/go.mod h1:LFrhmohqILi/zJrcZ3g2iPl0d4UthXhf1PlnvJtGPTw=
+github.com/gladiusio/gladius-common v0.1.4 h1:pU/QwQCPO1zUM4URs7FF9xLtfSTj7tpeX/YvfmR4E6M=
+github.com/gladiusio/gladius-common v0.1.4/go.mod h1:m0CMPVZLow1RexpoD7vbmDf52Tzxz8UsTVoo2AdV5DU=
 github.com/gladiusio/gladius-controld v0.0.0-20180831225039-43db901bd39d h1:Oz2pU62uq7+qIJc+G/3FFVoNq/BtPJTi9TjehPzdDvI=
 github.com/gladiusio/gladius-controld v0.0.0-20180831225039-43db901bd39d/go.mod h1:7VVUNCjF8sJyi23r0zrvzUO5YSNVRICRxAUvONKx5k0=
 github.com/gladiusio/gladius-p2p v0.0.0-20181008220948-6743a31a69fd h1:9STs+Bwd13QBEYms9LekBjk/LgKKHbAAlRJWmxDXdw0=
@@ -100,6 +102,8 @@ github.com/jackpal/go-nat-pmp v1.0.1 h1:i0LektDkO1QlrTm/cSuP+PyBCDnYvjPLGl4LdWEM
 github.com/jackpal/go-nat-pmp v1.0.1/go.mod h1:QPH045xvCAeXUZOxsnwmrtiCoxIr9eob+4orBN1SBKc=
 github.com/jinzhu/gorm v1.9.1 h1:lDSDtsCt5AGGSKTs8AHlSDbbgif4G4+CKJ8ETBDVHTA=
 github.com/jinzhu/gorm v1.9.1/go.mod h1:Vla75njaFJ8clLU1W44h34PjIkijhjHIYnZxMqCdxqo=
+github.com/jinzhu/gorm v1.9.2 h1:lCvgEaqe/HVE+tjAR2mt4HbbHAZsQOv3XAZiEZV37iw=
+github.com/jinzhu/gorm v1.9.2/go.mod h1:Vla75njaFJ8clLU1W44h34PjIkijhjHIYnZxMqCdxqo=
 github.com/jinzhu/inflection v0.0.0-20180308033659-04140366298a h1:eeaG9XMUvRBYXJi4pg1ZKM7nxc5AfXfojeLLW7O5J3k=
 github.com/jinzhu/inflection v0.0.0-20180308033659-04140366298a/go.mod h1:h+uFLlag+Qp1Va5pdKtLDYj+kHp5pxUVkryuEj+Srlc=
 github.com/jinzhu/now v0.0.0-20180511015916-ed742868f2ae h1:8bBMcboXYVuo0WYH+rPe5mB8obO89a993hdTZ3phTjc=

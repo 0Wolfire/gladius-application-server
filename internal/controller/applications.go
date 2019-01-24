@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/gladiusio/gladius-common/pkg/db/models"
 	"github.com/jinzhu/gorm"
+	"github.com/spf13/viper"
 )
 
 // temp
@@ -69,6 +70,10 @@ import (
 func NodeApplyToPool(db *gorm.DB, payload models.NodeRequestPayload) (models.NodeProfile, error) {
 	profile := models.CreateApplication(&payload)
 	err := db.Model(&profile).Where("wallet like ?", payload.Wallet).FirstOrCreate(&profile).Error
+
+	if (viper.GetBool("Applications.AutoAccept")) {
+		db.Model(&profile).Updates(models.NodeProfile{PoolAccepted: true, NodeAccepted: true, Pending: false, Approved: true})
+	}
 
 	return profile, err
 }
