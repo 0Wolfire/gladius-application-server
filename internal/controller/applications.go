@@ -2,9 +2,10 @@ package controller
 
 import (
 	"errors"
-	"github.com/gladiusio/gladius-common/pkg/db/models"
+	"github.com/gladiusio/gladius-application-server/internal/models"
 	"github.com/jinzhu/gorm"
 	"github.com/spf13/viper"
+	"github.com/rs/zerolog/log"
 )
 
 // temp
@@ -72,7 +73,8 @@ func NodeApplyToPool(db *gorm.DB, payload models.NodeRequestPayload) (models.Nod
 	err := db.Model(&profile).Where("wallet like ?", payload.Wallet).FirstOrCreate(&profile).Error
 
 	if (viper.GetBool("Applications.AutoAccept")) {
-		db.Model(&profile).Updates(models.NodeProfile{PoolAccepted: true, NodeAccepted: true, Pending: false, Approved: true})
+		db.Model(&profile).Updates(models.NodeProfile{PoolAccepted: true, NodeAccepted: true, Pending: false})
+		log.Debug().Msg("Wallet: " + payload.Wallet + " automatically accepted")
 	}
 
 	return profile, err

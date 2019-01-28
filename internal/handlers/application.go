@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"github.com/gladiusio/gladius-application-server/internal/controller"
-	"github.com/gladiusio/gladius-common/pkg/db/models"
+	"github.com/gladiusio/gladius-application-server/internal/models"
 	"github.com/gladiusio/gladius-common/pkg/handlers"
 	"github.com/gladiusio/gladius-p2p/pkg/p2p/message"
 	"github.com/gladiusio/gladius-p2p/pkg/p2p/signature"
