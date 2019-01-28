@@ -1,0 +1,30 @@
+# Move this to the GladiusBase Directory, unix ~/.gladius as default
+# Standard Defaults, overide as you see fit
+[Log]
+  level                       = "debug"
+  pretty                      = true
+
+[Blockchain]
+  provider                    = "https://mainnet.infura.io/tjqLYxxGIUp0NylVCiWw"
+  marketAddress               = "0x27a9390283236f836a0b3c8dfdbed2ed854322fc"
+
+[API]
+  port                        = 3333
+  debugRequests               = true
+  remoteConnectionsAllowed    = true
+
+[Database]
+  # See http://gorm.io/docs/connecting_to_the_database.html for connection types and formatting
+  # As default, a sqlite file will be used to get things up and running quickly
+  type                        = "sqlite3"
+  connection                  = "/root/.gladius/local.db"
+  initializePoolInfo          = true
+
+[Service]
+  name                        = "gladius-application-server"
+  displayName                 = "Application Server"
+  description                 = "Gladius Application Server"
+  debug                       = true
+
+[Applications]
+  AutoAccept                  = true

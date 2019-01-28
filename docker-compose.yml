@@ -1,0 +1,27 @@
+version: '3'
+services:
+  application-server:
+    image: gladiusio/application-server:latest
+    ports:
+      - "3333:3333"
+    networks:
+      application-server:
+    deploy:
+      restart_policy:
+        condition: on-failure
+    volumes:
+      - "gladius:/root/.gladius"
+volumes:
+  gladius:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: "${PWD}/docker"
+
+networks:
+  application-server:
+    driver: bridge
+    ipam:
+      config:
+      - subnet: 172.16.238.0/24
