@@ -30,7 +30,7 @@ func initializeConfiguration() (string, error) {
 	viper.AddConfigPath(base)
 
 	// Setup env variable handling
-	viper.SetEnvPrefix("APPLICATION-SERVER")
+	viper.SetEnvPrefix("APPLICATIONSERVER")
 	r := strings.NewReplacer(".", "_")
 	viper.SetEnvKeyReplacer(r)
 	viper.AutomaticEnv()
