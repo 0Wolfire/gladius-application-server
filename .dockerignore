@@ -1,0 +1,19 @@
+# Ignore hidden files and folders
+.*/
+.*
+
+# Ignore config files
+*.json
+*.toml
+*.iml
+*file
+docker*
+
+# Ignore Unused Folders
+docker/
+tests/
+
+# Ignore Unused Files
+Makefile
+LICENSE
+README.md
