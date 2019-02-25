@@ -28,3 +28,4 @@
 
 [Applications]
   AutoAccept                  = true
+  PoolOwner                   = "0x9717EaDbfE344457135a4f1fA8AE3B11B4CAB0b7"

@@ -29,13 +29,23 @@ func PoolContainsNode(database *gorm.DB) func(w http.ResponseWriter, r *http.Req
 	return func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
 		walletAddress := vars["walletAddress"]
-		containsWallet, err := controller.NodeInPool(database, walletAddress)
-		if err != nil {
-			handlers.ErrorHandler(w, r, "Could not find record", err, http.StatusNotFound)
-			return
-		}
 
-		handlers.ResponseHandler(w, r, "null", true, nil, PoolContainsWallet{ContainsWallet: containsWallet}, nil)
+		containsWallet, nodeErr := controller.NodeInPool(database, walletAddress)
+		poolOwnerContainsWallet, poolErr := controller.PoolWalletOwner(database, walletAddress)
+
+		if !(containsWallet || poolOwnerContainsWallet) {
+			if nodeErr != nil {
+				handlers.ErrorHandler(w, r, "Could not find node record", nodeErr, http.StatusNotFound)
+				return
+			}
+
+			if poolErr != nil {
+				handlers.ErrorHandler(w, r, "Could not find pool record", poolErr, http.StatusNotFound)
+				return
+			}
+		} else {
+			handlers.ResponseHandler(w, r, "null", true, nil, PoolContainsWallet{ContainsWallet: (containsWallet || poolOwnerContainsWallet)}, nil)
+		}
 	}
 }
 

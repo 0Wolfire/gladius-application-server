@@ -26,16 +26,16 @@ func Initialize(db *gorm.DB) (*gorm.DB, error) {
 
 func InitializePoolManager(db *gorm.DB) {
 	poolInfo := models.PoolInformation{
-		Address:"0x0000000000000000000000000000000000000000",
-		Bio:"Pool Initialized with Default Values",
-		Email:"pool@test-values.com",
-		Location:"Placeholder, PH",
-		Name: "Place Holder",
-		Rating: 0,
-		Public:false,
-		Url:"localhost:" + viper.GetString("API.Port"),
-		Wallet: "0x0000000000000000000000000000000000000000",
-		NodeCount:0,
+		Address:   "0x0000000000000000000000000000000000000000",
+		Bio:       "Pool Initialized with Default Values",
+		Email:     "pool@test-values.com",
+		Location:  "Placeholder, PH",
+		Name:      "Place Holder",
+		Rating:    0,
+		Public:    false,
+		Url:       "localhost:" + viper.GetString("API.Port"),
+		Wallet:    viper.GetString("Applications.PoolOwner"),
+		NodeCount: 0,
 	}
 	db.NewRecord(poolInfo)
 	db.Create(&poolInfo)

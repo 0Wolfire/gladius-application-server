@@ -1,7 +1,6 @@
 package server
 
 import (
-	"os"
 	"github.com/gladiusio/gladius-application-server/internal/controller"
 	asrouting "github.com/gladiusio/gladius-application-server/internal/routing"
 	"github.com/gladiusio/gladius-common/pkg/utils"
@@ -12,6 +11,7 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/viper"
+	"os"
 	"strings"
 )
 
@@ -38,7 +38,7 @@ func initializeConfiguration() (string, error) {
 	// Load config
 	err = viper.ReadInConfig()
 	var message = "Using provided config file and overriding default"
-	
+
 	if err != nil {
 		return "Error reading config file, it may not exist or is corrupted. Using defaults.", err
 	}
@@ -76,6 +76,7 @@ func buildOptions(base string) {
 
 	// Applications
 	ConfigOption("Apllications.AutoAccept", false)
+	ConfigOption("Apllications.PoolOwner", "")
 
 	// Misc.
 	ConfigOption("GladiusBase", base) // Convenient option to have, not needed though
