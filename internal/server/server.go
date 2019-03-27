@@ -55,7 +55,7 @@ func buildOptions(base string) {
 	ConfigOption("Log.Pretty", true)
 
 	// Blockchain options
-	ConfigOption("Blockchain.Provider", "https://mainnet.infura.io/tjqLYxxGIUp0NylVCiWw")
+	ConfigOption("Blockchain.Provider", "https://mainnet.infura.io/v3/1d3545f907ff4598893997c522e46676")
 	ConfigOption("Blockchain.MarketAddress", "0x27a9390283236f836a0b3c8dfdbed2ed854322fc")
 
 	// API options

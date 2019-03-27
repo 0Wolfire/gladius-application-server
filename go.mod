@@ -34,7 +34,7 @@ require (
 	github.com/prometheus/client_model v0.0.0-20180712105110-5c3871d89910 // indirect
 	github.com/prometheus/common v0.0.0-20180801064454-c7de2306084e // indirect
 	github.com/prometheus/procfs v0.0.0-20181005140218-185b4288413d // indirect
-	github.com/rs/zerolog v1.9.1
+	github.com/rs/zerolog v1.13.0
 	github.com/spf13/viper v1.2.1
 	github.com/tdewolff/test v0.0.0-20171106182207-265427085153 // indirect
 	github.com/tv42/httpunix v0.0.0-20150427012821-b75d8614f926 // indirect
